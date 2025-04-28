@@ -4,7 +4,7 @@ from dust3r.utils.image import load_images
 from dust3r.image_pairs import make_pairs
 from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
 from dust3r.demo import get_3D_model_from_scene
-
+import PIL.Image
 
 if __name__ == '__main__':
     device = 'cuda'
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # you can put the path to a local checkpoint in model_name if needed
     model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
     # load_images can take a list of images or a directory
-    images = load_images(['croco/assets/Chateau1.png', 'croco/assets/Chateau2.png'], size=512)
+    images = load_images([PIL.Image.open('croco/assets/Chateau1.png'), PIL.Image.open('croco/assets/Chateau2.png')], size=512)
     print(images)
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference(pairs, model, device, batch_size=batch_size)
